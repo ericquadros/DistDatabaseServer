@@ -1,0 +1,14 @@
+{
+  "alunos": [
+    {
+      "idAluno": 1,
+      "nomeAluno": "Tales Viegas"
+      "turmas": [1, 2]
+    },
+    {
+      "idAluno": 2,
+      "nomeAluno": "Carlos Zeve"
+      "turmas": [1]
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+	"port": 1235,
+	"studentServerHost": "127.0.0.1",
+	"studentServerPort": 1236,
+	"classServerHost": "127.0.0.1",
+	"classServerPort": 1237
+}
