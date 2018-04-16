@@ -36,15 +36,14 @@ public class Settings {
 			}
 			
 		} catch (FileNotFoundException e) {
-			System.out.println("Ocorreu uma exceção: " + e.getMessage());
+			System.out.println("Ocorreu uma exceï¿½ï¿½o: " + e.getMessage());
 		} catch (NullPointerException e) {
-			System.out.println("Ocorreu uma exceção: " + e.getMessage());
+			System.out.println("Ocorreu uma exceï¿½ï¿½o: " + e.getMessage());
 		}
 		
 		return ret;
 	}
 
-	
 	public int getPort() {
 		return port;
 	}

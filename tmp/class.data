@@ -2,11 +2,18 @@
   "turmas": [
     {
       "idTurma": 1,
-	  "nomeTurma": "Banco de Dados"	       
+	  "nomeTurma": "Banco de Dados",
+	  "alunos": []	       
     },
     {
       "idTurma": 2,
-      "nomeTurma": "Compiladores"     
+      "nomeTurma": "Compiladores",
+	  "alunos": []     
+    },
+    {
+      "idTurma": 3,
+      "nomeTurma": "Engenharia de Software",
+	  "alunos": []     
     }
   ]
 }
