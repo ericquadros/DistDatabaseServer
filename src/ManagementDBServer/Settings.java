@@ -1,4 +1,4 @@
-package ClassDatabaseServer;
+package ManagementDBServer;
 
 import com.google.gson.Gson;
 import java.io.File;
@@ -8,8 +8,9 @@ import java.io.Reader;
 
 public class Settings {
 	private int port;
+	private String host = "127.0.0.1";
 	private String pathFile;
-	private final String dirRoot = "src/ClassDatabaseServer/";
+	private final String dirRoot = "src/ManagementDBServer/";
 	
 	public Settings() {
 		this.loadSettingsfromConfig();
@@ -46,6 +47,14 @@ public class Settings {
 
 	public int getPort() {
 		return port;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
+	}
+	
+	public String getHost() {
+		return host;
 	}
 
 	public String getPathFile() {

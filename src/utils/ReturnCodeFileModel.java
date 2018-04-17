@@ -1,4 +1,4 @@
-package ClassDatabaseServer;
+package utils;
 
 public class ReturnCodeFileModel {
 	private int codRetorno = 0;

@@ -1,4 +1,4 @@
-package ClassDatabaseServer;
+package StudentDatabaseServer;
 
 import com.google.gson.Gson;
 import java.io.File;
@@ -9,7 +9,7 @@ import java.io.Reader;
 public class Settings {
 	private int port;
 	private String pathFile;
-	private final String dirRoot = "src/ClassDatabaseServer/";
+	private final String dirRoot = "src/StudentDatabaseServer/";
 	
 	public Settings() {
 		this.loadSettingsfromConfig();

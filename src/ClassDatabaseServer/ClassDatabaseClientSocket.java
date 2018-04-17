@@ -14,6 +14,8 @@ import java.util.Scanner;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import utils.ReturnCodeEnum;
+
 public class ClassDatabaseClientSocket implements Runnable {
 	 
 	  private Socket clienteSocket;
@@ -50,18 +52,14 @@ public class ClassDatabaseClientSocket implements Runnable {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		   
 			
-	  	    Scanner scanner = null; //new Scanner(System.in);
+	  	    Scanner scanner = null; 
 	  	    
 	  	    while (true) {
 	  	    	
 	  	    	if (scanner == null) 
 	  	    		scanner = new Scanner(System.in);
 	  	    	
-	  	    	//startBufferIn(in);
-	  	    	//in = new BufferedReader(new InputStreamReader(input));
-
 	  	    	String clienteMensagem = this.in.readLine();
 	  	    	
                 System.out.println("ClassDatabaseServer: Mensagem recebida do client: " + clienteMensagem);     
@@ -69,8 +67,6 @@ public class ClassDatabaseClientSocket implements Runnable {
                 if (clienteMensagem.equals("/fim")) {
                 	this.getServer().executeEnd();
                 	
-                	//finalizeInputs(input, in);
-                	//finalizeOutputs(output, out);
                 	in.close();
                 	out.close();
                   
@@ -245,7 +241,7 @@ public class ClassDatabaseClientSocket implements Runnable {
 	  	    this.clienteSocket.close();
 	  	   
        } catch (Exception e) {
-    	 System.out.println("Ocorreu um exception");
+    	 System.out.println("Ocorreu uma falha não tratada.");
          System.out.println(e);
        } 
 	}
