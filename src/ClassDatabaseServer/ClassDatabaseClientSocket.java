@@ -20,14 +20,12 @@ public class ClassDatabaseClientSocket implements Runnable {
 	  private BufferedReader in;
 	  private PrintStream out;
 	  private MainClassDatabase server;
-	  private Gson gson;
 
 	  public ClassDatabaseClientSocket(Socket clienteSocket, MainClassDatabase server) throws IOException {
 	    this.clienteSocket = clienteSocket; 
 	    this.server = server;
 	  	this.in = new BufferedReader(new InputStreamReader(clienteSocket.getInputStream())); // Criando o BufferedReader InputStream para receber do cliente 
 	  	this.out = new PrintStream(clienteSocket.getOutputStream()); // Criando o PrintStream OutputStream para enviar ao cliente
-	  	this.gson = new Gson();
 	  }
 
 	public MainClassDatabase getServer() {
@@ -88,6 +86,8 @@ public class ClassDatabaseClientSocket implements Runnable {
                 	
             		System.out.println("messageOpt e: " + messageOpt);
             		
+            		String textReturn = "";
+            		
                 	switch (messageOpt) {
                 	
 						case "turmas":
@@ -100,17 +100,43 @@ public class ClassDatabaseClientSocket implements Runnable {
 							break;
 						
 						case "turma": // /turma/<idAluno>
+							int classId = 0;
+
+							textReturn = "";
 							
 							if (ConstConfigDebugProd.isDebug) 
 								System.out.println("ServerClass - Socket: Consultando turma");
 							
-							out.flush();
-							out.close();
+							if (!messageParam1.isEmpty()) {
+								classId = Integer.parseInt(messageParam1);
+								
+								if (classes.isClassExists(classId)) {
+									ClassFileModel classe = classes.findById(classId);
+									if (classe.getIdClass() > 0) {
+										textReturn = classe.toJson();
+									} else {
+										textReturn = ReturnCodeEnum.RegistroNaoEncontrado.toSring();
+									}
+								
+									out.println(textReturn); //JSON 
+									out.flush();
+									out.close();
+									
+								} else {
+									if (ConstConfigDebugProd.isDebug) 
+										System.out.println("ServerClass - Socket: Não foi possível retornar a turma, não foi encontrada.");
+									
+									textReturn = ReturnCodeEnum.RegistroNaoEncontrado.toSring();
+									out.println(textReturn); //JSON 
+									out.flush();
+									out.close();
+								}
+							}
 							
 							break;
 							
 						case "incluiTurma": // /incluiTurma/1/Banco de Dados
-							int classId = 0;
+							classId = 0;
 							String className = "";
 							
 							if (!messageParam1.isEmpty() && !messageParam2.isEmpty()) {
@@ -129,7 +155,7 @@ public class ClassDatabaseClientSocket implements Runnable {
 									classes.add(classe);
 									boolean ret = databaseMng.saveFileClassDatabase(settings.getPathFile(), classes);
 									
-									String textReturn = "";
+									textReturn = "";
 									
 									if (ret) {
 										textReturn = ReturnCodeEnum.RequisicaoOK.toSring();
@@ -153,7 +179,7 @@ public class ClassDatabaseClientSocket implements Runnable {
 						case "apagaTurma": // /apagaTurma/<idTurma>
 							
 							classId = 0;
-							String textReturn = "";
+							textReturn = "";
 							
 							if (!messageParam1.isEmpty()) {
 								classId = Integer.parseInt(messageParam1);
@@ -192,7 +218,13 @@ public class ClassDatabaseClientSocket implements Runnable {
 								System.out.println("ClassDatabaseServer: Parâmetro não encontrado, verifique"); // Requisicao nao conhecida
 							
 							textReturn = ReturnCodeEnum.RequisicaoInvalida.toSring();
-							out.println(textReturn); //JSON 
+							
+							try {
+								out.println(textReturn); //JSON
+							} catch (Exception e) {
+								System.out.println("Ocorreu uma falha ao tentar converter o objeto");
+							}
+							
 							out.flush();
 							out.close();
 							

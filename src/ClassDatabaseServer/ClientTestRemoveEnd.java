@@ -15,7 +15,6 @@ import java.util.Scanner;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-
 public class ClientTestRemoveEnd implements Runnable {
 	
 	 public Socket cliente;
@@ -43,8 +42,8 @@ public class ClientTestRemoveEnd implements Runnable {
 		Scanner entradaScanner = new Scanner(entrada);
 		
 		while (true) {
-			  System.out.println("O que deseja fazer?\n 1 adicionar uma Turma? + "
-			  		+ "\n 2 Pesquisar uma turma? \n 3 Apagar uma turma? \n 4 Listar Turmas");
+			  System.out.println("O que deseja fazer?\n 1 Adicionar uma turma? "
+			  		+ "\n 2 Pesquisar uma turma? \n 3 Excluir uma turma? \n 4 Listar turmas");
 			    Scanner teclado = new Scanner(System.in);
 			    
 				String r = teclado.nextLine();
@@ -69,7 +68,9 @@ public class ClientTestRemoveEnd implements Runnable {
 			    	protocolo = "/turmas";
 			    }
 				
-				System.out.println("Enviando protocolo " + protocolo + " para o server gerente!");
+				if (ConstConfigDebugProd.isDebug) 
+					System.out.println("Enviando protocolo " + protocolo + " para o server gerente!");
+				
 				saida.println(protocolo);// envia protocolo ao server
 				saida.flush();
 				

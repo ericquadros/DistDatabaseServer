@@ -40,11 +40,27 @@ public class ClassFileModel {
 	public void setStudents(ArrayList<StudentFileModel> students) {
 		this.alunos = students;
 	}
-
+	
 	@Override
 	public String toString() {
 		GsonBuilder builder = new GsonBuilder();
 		Gson gson = builder.create();
 		return gson.toJson(this);
-	}		  
+	}
+	
+	public String toJson() {
+		GsonBuilder builder = new GsonBuilder();
+		Gson gson = builder.setPrettyPrinting().create();
+		
+		ClassFileModel classTempCopy = new ClassFileModel(this.getIdClass(), this.getNameClass(), this.getStudents());
+		String tempText = "";
+		
+		try {
+			tempText = gson.toJson(classTempCopy); 
+		} catch (Exception e) {
+			System.out.println("Ocorreu uma falha ao tentar converter o objeto = " + classTempCopy);
+		}
+		
+		return tempText;
+	}
 }

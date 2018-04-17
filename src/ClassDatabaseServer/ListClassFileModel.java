@@ -35,6 +35,19 @@ public class ListClassFileModel {
 		return false;
 	}
 	
+	public ClassFileModel findById(int classId) {
+		ClassFileModel classRet = new ClassFileModel(0, "", new ArrayList<StudentFileModel>()); // Init empty
+		
+		for (ClassFileModel classModel : this.turmas) {
+			if (classModel.getIdClass() == classId) {
+				classRet = classModel;
+				break;
+			}
+		}
+		
+		return classRet;
+	}
+	
 	public void setClassesCharge(ArrayList<ClassFileModel> classes) {
 		this.turmas = classes;
 	}
