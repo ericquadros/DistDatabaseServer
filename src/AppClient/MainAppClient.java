@@ -29,7 +29,9 @@ public class MainAppClient {
 	public void init() throws IOException {
 		// Inicializando configuracoes, lendo do arquivo
 		AppClient.Settings settings = new AppClient.Settings();
-		settings.setServer("class"); // Setando o cliente para o set para testar a classe selecionada, no final deve ser removido
+		String serverSelected = "class"; // Opcoes class, student, cache, management
+		
+		settings.setServer(serverSelected); // Setando o cliente para o set para testar a classe selecionada, no final deve ser removido
 		
 		Scanner scannerKeyboard = new Scanner(System.in);
 		
@@ -43,7 +45,7 @@ public class MainAppClient {
 				
 		while (isContinueExecute) {
 
-			this.showAppMenu();
+			this.showAppMenu(serverSelected);
 			
 		    String optKeyboard = scannerKeyboard.nextLine();
 		    System.out.println("");
@@ -118,10 +120,33 @@ public class MainAppClient {
 		System.out.println("=== App Cliente = Está conectado em: " + ip + ":" + port + " === \nPronto para executar requisições...");
 	}
 	
-	public void showAppMenu() {
-		System.out.println("\n=== App Cliente = Executar requisições ==="); 	
-		System.out.println("Turmas: \n  1 - Adicionar | 2  - Pesquisar | 3 - Excluir "
-				+" \n  4  - Listar todas as turmas \n  9 - Sair");
+	public void showAppMenu(String serverSelected) {
+		System.out.println("\n=== App Cliente = Executar requisições ===");
+		
+		switch (serverSelected) {
+			case "cache":
+			case "management":
+			{
+				System.out.println("Turmas: \n  1 - Adicionar | 2  - Pesquisar | 3 - Excluir ");
+				System.out.println(" \n  4  - Listar todas as turma");
+				System.out.println("Alunos: \n  5 - Adicionar | 6  - Pesquisar | 7 - Excluir ");
+				System.out.println(" \n  8  - Listar todos os alunos \n  9 - Sair");
+				break;
+			}
+			case "student":
+			{
+				System.out.println("Alunos: \n  5 - Adicionar | 6  - Pesquisar | 7 - Excluir "
+						+" \n  8  - Listar todas os alunos \n  9 - Sair");
+				break;
+			}
+			case "class":
+			{
+				System.out.println("Turmas: \n  1 - Adicionar | 2  - Pesquisar | 3 - Excluir "
+						+" \n  4  - Listar todas as turmas \n  9 - Sair");
+				break;
+			}
+			
+		}
 		
 		System.out.print("Informe a opção de requisição: ");
 	}
