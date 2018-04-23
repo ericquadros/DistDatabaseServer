@@ -44,8 +44,8 @@ public class Settings {
 				this.managementServerPort = config.getClassServerPort();
 				this.studentServerHost = config.getStudentServerHost();
 				this.studentServerPort = config.getCacheServerPort();
-				this.classServerHost = config.getCacheServerHost();
-				this.classServerPort = config.getCacheServerPort();
+				this.classServerHost = config.getClassServerHost();
+				this.classServerPort = config.getClassServerPort();
 				
 				ret = true;				
 			} else {

@@ -87,7 +87,7 @@ public class MainAppClient {
 					e.printStackTrace();
 				} 
 				
-				 // Cria tratador de cliente numa nova thread
+				 // Cria tratador de cliente em uma nova thread
 	            HandlerMainManagementDb clientHandler = new HandlerMainManagementDb(client, this, protocol);
 	            Thread t = new Thread(clientHandler);
 	            t.start();

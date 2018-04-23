@@ -38,7 +38,7 @@ public class Settings {
 		} catch (FileNotFoundException e) {
 			System.out.println("Ocorreu uma falha: Arquivo não encontrado.");
 		} catch (NullPointerException e) {
-			System.out.println("Ocorreu uma exce��o: " + e.getMessage());
+			System.out.println("Ocorreu uma falha: " + e.getMessage());
 		}
 		
 		return ret;

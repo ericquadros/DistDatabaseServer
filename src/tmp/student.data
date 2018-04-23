@@ -3,12 +3,26 @@
     {
       "idAluno": 1,
       "nomeAluno": "Tales Viegas"
-      "turmas": [1, 2]
+      "turmas": [
+		{
+			"idTurma": 1,
+			"nomeTurma": ""
+		},
+		{
+			"idTurma": 2,
+			"nomeTurma": ""
+		}
+	  ]
     },
     {
       "idAluno": 2,
-      "nomeAluno": "Carlos Zeve"
-      "turmas": [1]
+      "nomeAluno": "Elgio Schlemer"
+       "turmas": [
+		{
+			"idTurma": 1,
+			"nomeTurma": ""
+		}
+	  ]
     }
   ]
 }

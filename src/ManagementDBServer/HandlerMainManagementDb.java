@@ -1,20 +1,10 @@
 package ManagementDBServer;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.Scanner;
 
-import ClassDatabaseServer.ClassFileModel;
-import ClassDatabaseServer.ConstConfigDebugProd;
-import ClassDatabaseServer.DatabaseManager;
-import ClassDatabaseServer.ListClassFileModel;
-import ClassDatabaseServer.MainClassDatabase;
-import ClassDatabaseServer.Settings;
 import utils.ReturnCodeEnum;
 
 public class HandlerMainManagementDb implements Runnable {

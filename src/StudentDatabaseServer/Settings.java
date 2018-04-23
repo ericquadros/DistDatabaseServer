@@ -4,7 +4,9 @@ import com.google.gson.Gson;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.Reader;
+import java.io.Writer;
 
 public class Settings {
 	private int port;
@@ -18,13 +20,14 @@ public class Settings {
 	boolean loadSettingsfromConfig() {
 		boolean ret = false;
 		
-		try {	
+		try {
+			Gson gson = new Gson();
+			
 			File arq = new File(dirRoot + "config.json");
 			
 			if (arq.exists()) {
 				Reader reader = new FileReader(arq);
-								
-				Gson gson = new Gson();
+				
 				ConfigFileModel config = gson.fromJson(reader, ConfigFileModel.class);
 				
 				this.port = config.getPort();
@@ -32,6 +35,15 @@ public class Settings {
 				
 				ret = true;				
 			} else {
+				// Se o arquivo não existe cria e grava os dados padrões
+				
+				ConfigFileModel config = new ConfigFileModel();
+				config.setPort(1236);
+				
+				//Writer writer = new FileWriter(arq);
+				
+				
+				
 				ret = false;
 			}
 			
