@@ -36,4 +36,8 @@ public class MainClassDatabase {
 		if (ConstConfigDebugProd.isDebug)
 			System.out.println("Encerrando o Server Class");
 	}
+	
+	public static void executeMessage(String msg) {
+		System.out.println("MainClassDatabaseServer - executeMessage: " + msg);
+	}
 }
