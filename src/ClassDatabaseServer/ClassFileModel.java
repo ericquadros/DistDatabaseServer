@@ -41,6 +41,10 @@ public class ClassFileModel {
 		this.alunos = students;
 	}
 	
+	public void addStudantInClass(StudentFileModel studant) {
+		this.alunos.add(studant);
+	}
+	
 	@Override
 	public String toString() {
 		GsonBuilder builder = new GsonBuilder();

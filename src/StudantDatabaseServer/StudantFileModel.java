@@ -42,6 +42,15 @@ public class StudantFileModel {
 		this.turmas = turmas;
 	}
 	
+	public boolean isExistClassId(int classId ) {
+		for (ClassFileModel classFileModel : this.getTurmas()) {
+			if (classFileModel.getIdClass() == classId) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public String toJson() {
 		GsonBuilder builder = new GsonBuilder();
 		Gson gson = builder.setPrettyPrinting().create();
