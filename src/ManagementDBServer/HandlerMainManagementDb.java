@@ -6,6 +6,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
+import javax.swing.DebugGraphics;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -17,6 +19,7 @@ import StudantDatabaseServer.Settings;
 import StudantDatabaseServer.StudantFileModel;
 import utils.ConstConfigDebugProd;
 import utils.ReturnCodeEnum;
+import utils.ReturnCodeFileModel;
 
 public class HandlerMainManagementDb implements Runnable {
 	private Socket clienteSocket;
@@ -85,7 +88,8 @@ public class HandlerMainManagementDb implements Runnable {
 	            		
 	            		String textReturn = "";
 	            		
-	            		System.out.println("messageOpt e: " + messageOpt);
+	            		if (ConstConfigDebugProd.isDebug)
+	            			System.out.println("messageOpt: " + messageOpt);
 	            		
 	            		switch (messageOpt) {
 	                	
@@ -94,10 +98,10 @@ public class HandlerMainManagementDb implements Runnable {
 								// Buscando os daodos no servidor de alunos
 							
 								ListStudantFileModel studantsFromServerStudants = new ListStudantFileModel();
-								studantsFromServerStudants = this.RequestSocketServerStudantsGetAll();
+								studantsFromServerStudants = this.requestSocketServerStudantsGetAll();
 																
 								ListClassFileModel classesFromServerClass = new ListClassFileModel();
-								classesFromServerClass = this.RequestSocketServerClassGetAll();
+								classesFromServerClass = this.requestSocketServerClassGetAll();
 														
 								for (StudantFileModel aluno : studantsFromServerStudants.getAlunos()) {
 									if (aluno.getTurmas().size() > 0) {
@@ -122,6 +126,57 @@ public class HandlerMainManagementDb implements Runnable {
 								
 								break;
 								
+							case "aluno":  // /aluno/<idAluno>
+								 
+								int studantId = 0;
+								textReturn = "";
+								
+								if (ConstConfigDebugProd.isDebug) 
+									System.out.println(this.getClass().getName() + ": Consultando turma");
+								
+								if (!messageParam1.isEmpty()) {
+									studantId = Integer.parseInt(messageParam1);
+									
+									textReturn = requestSocketServerStudantsGet(studantId);
+									
+									ReturnCodeFileModel returnCodeServerStudants = new ReturnCodeFileModel(0, "");
+									returnCodeServerStudants = gson.fromJson(textReturn, ReturnCodeFileModel.class);
+									
+									if (returnCodeServerStudants.getCodRetorno() > 0) {
+										this.out.println(gson.toJson(returnCodeServerStudants));
+									} else {
+										StudantFileModel studantFromServer = new StudantFileModel(0, "", null);
+										studantFromServer = gson.fromJson(textReturn, StudantFileModel.class); // Aluno
+										
+										classesFromServerClass = new ListClassFileModel();
+										classesFromServerClass = this.requestSocketServerClassGetAll();
+										
+										for (ClassFileModel turmaStudant : studantFromServer.getTurmas()) {
+											if (classesFromServerClass.getTurmas().size() > 0) {
+												for (ClassFileModel turmaTurmas : classesFromServerClass.getTurmas()) {
+													if(turmaTurmas.getIdClass() == turmaStudant.getIdClass()) {
+														turmaStudant.setNameClass(turmaTurmas.getNameClass());
+													}
+												}
+											}
+										}
+										
+										this.out.println(gson.toJson(studantFromServer));
+									}
+									
+									this.out.flush();								
+									this.out.close();
+									this.in.close();
+									this.clienteSocket.close();
+								}
+
+								out.println(textReturn); //JSON 
+								out.flush();
+								out.close();
+								
+								break;
+								
+								
 							default :
 								
 								break;
@@ -138,7 +193,7 @@ public class HandlerMainManagementDb implements Runnable {
        } 
 	}
 	
-	ListStudantFileModel RequestSocketServerStudantsGetAll() {
+	ListStudantFileModel requestSocketServerStudantsGetAll() {
 		ListStudantFileModel ret = new ListStudantFileModel();
 		
 		settings.setServer("studant");
@@ -176,7 +231,52 @@ public class HandlerMainManagementDb implements Runnable {
 		return ret;
 	}
 	
-	ListClassFileModel RequestSocketServerClassGetAll() {
+	String requestSocketServerStudantsGet(int id) {
+		String ret = new String();
+		
+		settings.setServer("studant");
+		
+		Socket clientStudant;
+		
+		try {
+			clientStudant = new Socket(this.settings.getHost(), this.settings.getPort()); // Conecta no server
+			Scanner clientStudantIn = new Scanner(clientStudant.getInputStream());
+			PrintStream clientStudantOut = new PrintStream(clientStudant.getOutputStream());
+			
+			clientStudantOut.println("/aluno/" + id);
+			String messageRet = "";
+			
+			while (clientStudantIn.hasNext()) {
+				messageRet += clientStudantIn.nextLine();
+			}													
+			
+			StudantFileModel studantFromServerSudants = new StudantFileModel(0, "", null);
+			studantFromServerSudants = gson.fromJson(messageRet, StudantFileModel.class); //Lista com os alunos
+			
+			if (studantFromServerSudants.getIdStudent() > 0) {
+				ret = gson.toJson(studantFromServerSudants);
+			} else {
+				ReturnCodeFileModel returnCodeServerStudants = new ReturnCodeFileModel(0, "");
+				returnCodeServerStudants = gson.fromJson(messageRet, ReturnCodeFileModel.class);
+				ret = gson.toJson(returnCodeServerStudants);
+			}
+			
+			clientStudantIn.close();
+			clientStudantOut.close();
+			clientStudant.close();
+			
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
+		return ret;
+	}
+	
+	ListClassFileModel requestSocketServerClassGetAll() {
 		ListClassFileModel ret = new ListClassFileModel();
 		
 		settings.setServer("class");
