@@ -9,12 +9,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import ClassDatabaseServer.ClassFileModel;
-import ClassDatabaseServer.ConstConfigDebugProd;
-import ClassDatabaseServer.DatabaseManager;
-import ClassDatabaseServer.ListClassFileModel;
-import ClassDatabaseServer.MainClassDatabase;
-import ClassDatabaseServer.Settings;
+import utils.ConstConfigDebugProd;
 import utils.ReturnCodeEnum;
 
 public class HandlerMainManagementDb implements Runnable {
@@ -43,23 +38,9 @@ public class HandlerMainManagementDb implements Runnable {
 	public void run() {
 		try {
 			if (ConstConfigDebugProd.isDebug)
-				System.out.println("ClassDatabaseServer: Rodando...");
-			
-			Settings settings = new Settings();
-			DatabaseManager databaseMng = null;
-			ListClassFileModel classes = null;
+				System.out.println("HandlerMainManagement: Rodando...");
 			
 			String messageReceive = "";
-			
-			try {
-				databaseMng = new DatabaseManager(settings.getPathFile());  // Iniciando o gerenciador e carregando os dados 
-				classes = new ListClassFileModel();
-				
-				classes.setClassesCharge(databaseMng.getClasses());
-				
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 			
 			this.out.println(messageSendProtocol); // Enviando a mensagem recebida no contrutor
 		
@@ -69,11 +50,11 @@ public class HandlerMainManagementDb implements Runnable {
 			
 			this.mainCall.setMessage(messageReceive);
 			
-			//System.out.println("messageReceive: " + messageReceive);
-            //System.out.println("ClassDatabaseServer: Mensagem recebida do client: " + clienteMensagem);     
+			if (ConstConfigDebugProd.isDebug)
+				System.out.println("HandlerMainManagement: Mensagem recebida do server: " + messageReceive);     
 	  	    
 	  	    if (ConstConfigDebugProd.isDebug)
-	  	    	System.out.println("Estamos encerrando o clienteSocket");
+	  	    	System.out.println("Estamos encerrando o HandlerMainManagement");
 	  	    
 	  	    // Encerrando conexoes e finalizando
 	  	    in.close();

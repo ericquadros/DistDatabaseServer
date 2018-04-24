@@ -15,6 +15,8 @@ import java.util.Scanner;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import utils.ConstConfigDebugProd;
+
 public class ClientTestRemoveEnd implements Runnable {
 	
 	 public Socket cliente;

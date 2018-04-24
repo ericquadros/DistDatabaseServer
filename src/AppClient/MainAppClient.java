@@ -8,12 +8,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
-import javax.naming.InitialContext;
-import javax.swing.DebugGraphics;
-
-import ClassDatabaseServer.ClassDatabaseClientSocket;
-import ClassDatabaseServer.ConstConfigDebugProd;
-import ClassDatabaseServer.Settings;
+import utils.ConstConfigDebugProd;
 
 public class MainAppClient {
 	private String message;

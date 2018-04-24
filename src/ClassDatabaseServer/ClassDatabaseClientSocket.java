@@ -14,6 +14,7 @@ import java.util.Scanner;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import utils.ConstConfigDebugProd;
 import utils.ReturnCodeEnum;
 
 public class ClassDatabaseClientSocket implements Runnable {

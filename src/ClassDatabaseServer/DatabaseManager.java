@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import utils.ConstConfigDebugProd;
+
 public class DatabaseManager {
 	private GsonBuilder builder = new GsonBuilder();
 	private Gson gson = builder.setPrettyPrinting().create();
@@ -78,20 +80,24 @@ public class DatabaseManager {
 		this.classFile = new File(this.rootPath + this.pathFile);
 		
 		if (this.classFile.exists()) {
-			String alunosTabela = "";
+			String content = "";
 			FileReader fr = new FileReader(this.classFile);
-			char[] a = new char[(int) this.classFile.length()];
-			fr.read(a); // reads the content to the array
-			for (char c : a) {
-				alunosTabela += c;	
+			char[] arrayContent = new char[(int) this.classFile.length()];
+			
+			fr.read(arrayContent); // reads the content to the array
+			for (char c : arrayContent) {
+				content += c;	
 			}
 			
-			ListClassFileModel tabelaAux = new ListClassFileModel();
-			tabelaAux = gson.fromJson(alunosTabela, ListClassFileModel.class);
+			ListClassFileModel lClassFileModel = new ListClassFileModel();
+			lClassFileModel = gson.fromJson(content, ListClassFileModel.class);
 			fr.close();
-			return gson.toJson(tabelaAux);
+			
+			return gson.toJson(lClassFileModel);
 		} else {
-			System.out.println("Tabela de Alunos nao encontrada!");
+			if (ConstConfigDebugProd.isDebug)
+				System.out.println("Arquivo não encontrado.");
+			
 			return null;
 		}
 	}
