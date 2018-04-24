@@ -23,6 +23,8 @@ public class MainManagementDatabase {
 		// Inicializando configuracoes, lendo do arquivo
 		ManagementDBServer.Settings settings = new ManagementDBServer.Settings();
 		
+		//A LOGICA TEM QUE SER PARECIDA COM O QUE TEMOS NO SudantDatabaseServer.MainStudantDatabase
+		
 	}
 
 	public String getMessage() {

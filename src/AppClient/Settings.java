@@ -43,7 +43,7 @@ public class Settings {
 				this.managementServerHost = config.getManagementServerHost();
 				this.managementServerPort = config.getClassServerPort();
 				this.studentServerHost = config.getStudentServerHost();
-				this.studentServerPort = config.getCacheServerPort();
+				this.studentServerPort = config.getStudentServerPort();
 				this.classServerHost = config.getClassServerHost();
 				this.classServerPort = config.getClassServerPort();
 				
@@ -93,7 +93,7 @@ public class Settings {
 				
 				break;
 			}
-			case "student": {
+			case "studant": {
 				this.host = this.studentServerHost;
 				this.port = this.studentServerPort;
 				

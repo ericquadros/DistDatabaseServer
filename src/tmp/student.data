@@ -2,27 +2,27 @@
   "alunos": [
     {
       "idAluno": 1,
-      "nomeAluno": "Tales Viegas"
+      "nomeAluno": "Tales Viegas",
       "turmas": [
-		{
-			"idTurma": 1,
-			"nomeTurma": ""
-		},
-		{
-			"idTurma": 2,
-			"nomeTurma": ""
-		}
-	  ]
+        {
+          "idTurma": 1,
+          "nomeTurma": ""
+        },
+        {
+          "idTurma": 2,
+          "nomeTurma": ""
+        }
+      ]
     },
     {
       "idAluno": 2,
-      "nomeAluno": "Elgio Schlemer"
-       "turmas": [
-		{
-			"idTurma": 1,
-			"nomeTurma": ""
-		}
-	  ]
+      "nomeAluno": "Elgio Schlemer",
+      "turmas": [
+        {
+          "idTurma": 1,
+          "nomeTurma": ""
+        }
+      ]
     }
   ]
 }

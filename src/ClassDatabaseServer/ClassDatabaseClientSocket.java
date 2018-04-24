@@ -41,20 +41,11 @@ public class ClassDatabaseClientSocket implements Runnable {
 			System.out.println("ClassDatabaseServer: Rodando...");
 			
 			Settings settings = new Settings();
-			DatabaseManager databaseMng = null;
-			ListClassFileModel classes = null;
+			DatabaseManager databaseMng = databaseMng = new DatabaseManager(settings.getPathFile());  // Iniciando o gerenciador e carregando os dados 
+			ListClassFileModel classes = classes = new ListClassFileModel();
+			classes.setClassesCharge(databaseMng.getClasses());
 			
-			try {
-				databaseMng = new DatabaseManager(settings.getPathFile());  // Iniciando o gerenciador e carregando os dados 
-				classes = new ListClassFileModel();
-				
-				classes.setClassesCharge(databaseMng.getClasses());
-				
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-	  	    Scanner scanner = null; 
+	  	    Scanner scanner = new Scanner(System.in);; 
 	  	    
 	  	    while (true) {
 	  	    	
@@ -94,7 +85,7 @@ public class ClassDatabaseClientSocket implements Runnable {
 							out.flush();
 							out.close();
 							
-							break;
+						break;
 						
 						case "turma": // /turma/<idAluno>
 							int classId = 0;

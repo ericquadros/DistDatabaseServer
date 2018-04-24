@@ -32,6 +32,8 @@ public class HandlerMainManagementDb implements Runnable {
 		try {
 			if (ConstConfigDebugProd.isDebug)
 				System.out.println("Rodando...");
+			
+			//ESSA LOGICA TEM QUE SER PARECIDA COM O QUE TEMOS NO StudantDatabaseServer.HandlerStudantDatabase
 	  	   
        } catch (Exception e) {
     	 System.out.println("Ocorreu uma falha no Handler. Detalhes: " + e.getMessage());

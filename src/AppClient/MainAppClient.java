@@ -24,7 +24,7 @@ public class MainAppClient {
 	public void init() throws IOException {
 		// Inicializando configuracoes, lendo do arquivo
 		AppClient.Settings settings = new AppClient.Settings();
-		String serverSelected = "class"; // Opcoes class, student, cache, management
+		String serverSelected = "studant"; // Opcoes class, studant, cache, management
 		
 		settings.setServer(serverSelected); // Setando o cliente para o set para testar a classe selecionada, no final deve ser removido
 		
@@ -49,56 +49,88 @@ public class MainAppClient {
 		    	isContinueExecute = false;
 		    } else {
 		    	
-		    	if(optKeyboard.equals("1")) {
-			    	System.out.println("Digite o codigo da turma a ser inserida");
-			    	String turmaId = scannerKeyboard.nextLine();
+		    	if (!this.isOptValid(serverSelected, optKeyboard)) {
+		    		System.out.println("Opção inválida...");
+		    		
+		    	} else {
+		    		
+		    		if (optKeyboard.equals("1")) {
+				    	System.out.println("Digite o codigo da turma a ser inserida");
+				    	String turmaId = scannerKeyboard.nextLine();
+				    	protocol = "/incluiTurma/" + turmaId;
+				    	
+				    	System.out.println("Digite o nome da turma a ser inserida");
+				    	String nome = scannerKeyboard.nextLine();
+				    	protocol = protocol + "/" + nome;
+				    	
+				    } else if (optKeyboard.equals("2")) {
+				    	System.out.println("Digite o codigo da turma Para busca");
+				    	protocol = "/turma/" + scannerKeyboard.nextLine();
+				    	
+				    } else if (optKeyboard.equals("3")) {
+				    	System.out.println("Digite o codigo da turma para apagar");
+				    	protocol = "/apagaTurma/" + scannerKeyboard.nextLine();
+				    	
+				    } else if(optKeyboard.equals("4")) {
+				    	protocol = "/turmas";
+				    }
 			    	
-			    	protocol = "/incluiTurma/" + turmaId;
+				    else if(optKeyboard.equals("5")) {
+				    	System.out.println("Digite o codigo do aluno a ser inserido");
+				    	String alunoId = scannerKeyboard.nextLine();
+				    	protocol = "/incluiAluno/" + alunoId;
+				    	
+				    	System.out.println("Digite o nome do aluno a ser inserido");
+				    	String nome = scannerKeyboard.nextLine();
+				    	protocol = protocol + "/" + nome;
+				    	
+				    	System.out.println("Digite as turmas que o aluno pertence (formato: 1, 2, 3): ");
+				    	String turmas = scannerKeyboard.nextLine();
+				    	protocol = protocol + "/" + turmas;
+				    	
+				    } else if(optKeyboard.equals("6")) {
+				    	System.out.println("Digite o codigo do aluno para buscar");
+				    	protocol = "/aluno/" + scannerKeyboard.nextLine();
+				    	
+				    } else if(optKeyboard.equals("7")) {
+				    	System.out.println("Digite o codigo do aluno para apagar"); 
+				    	protocol = "/apagaAluno/" + scannerKeyboard.nextLine();
+				    	
+				    } else if(optKeyboard.equals("8")) {
+				    	protocol = "/alunos";
+				    }
+					
+					if (ConstConfigDebugProd.isDebug) 
+						System.out.println("Enviando requisição " + protocol + " para o servidor " + settings.getHost() + ":" + settings.getPort());
+					
+			    	//Iniciando para receber resposta
 			    	
-			    	System.out.println("Digite o nome da turma a ser inserida");
-			    	String nome = scannerKeyboard.nextLine();
+			    	try {
+						client = new Socket(settings.getHost(), settings.getPort()); // Conecta no server
+					} catch (UnknownHostException e) {
+						System.out.println("Ocorreu uma falha ao inicializar o socket - Host desconhecido.");
+						e.printStackTrace();
+					} catch (IOException e) {
+						System.out.println("Ocorreu uma falha ao inicializar o socket - IO desconhecido.");
+						e.printStackTrace();
+					} 
+					
+					 // Cria tratador de cliente em uma nova thread
+		            HandlerMainManagementDb clientHandler = new HandlerMainManagementDb(client, this, protocol);
+		            Thread t = new Thread(clientHandler);
+		            t.start();
+		            
+		            while (t.isAlive()) {
+		            	// Aguardando o Handler terminar a execucao para exibir a mensagem de retorno
+		            }
+		            
+		            System.out.println(this.getMessage());
+		            
+		            //Finalizando apos receber resposta
 			    	
-			    	protocol = protocol + "/" + nome;
-			    } else if (optKeyboard.equals("2")) {
-			    	System.out.println("Digite o codigo da turma Para busca");
-			    	protocol = "/turma/" + scannerKeyboard.nextLine();
-			    } else if (optKeyboard.equals("3")) {
-			    	System.out.println("Digite o codigo da turma para apagar");
-			    	protocol = "/apagaTurma/" + scannerKeyboard.nextLine();
-			    } else if(optKeyboard.equals("4")) {
-			    	protocol = "/turmas";
-			    }
-				
-				if (ConstConfigDebugProd.isDebug) 
-					System.out.println("Enviando requisição " + protocol + " para o servidor " + settings.getHost() + ":" + settings.getPort());
-				
-		    	//Iniciando para receber resposta
-		    	
-		    	try {
-					client = new Socket(settings.getHost(), settings.getPort()); // Conecta no server
-				} catch (UnknownHostException e) {
-					System.out.println("Ocorreu uma falha ao inicializar o socket - Host desconhecido.");
-					e.printStackTrace();
-				} catch (IOException e) {
-					System.out.println("Ocorreu uma falha ao inicializar o socket - IO desconhecido.");
-					e.printStackTrace();
-				} 
-				
-				 // Cria tratador de cliente em uma nova thread
-	            HandlerMainManagementDb clientHandler = new HandlerMainManagementDb(client, this, protocol);
-	            Thread t = new Thread(clientHandler);
-	            t.start();
-	            
-	            while (t.isAlive()) {
-	            	// Aguardando o Handler terminar a execucao para exibir a mensagem de retorno
-	            }
-	            
-	            System.out.println(this.getMessage());
-	            
-	            //Finalizando apos receber resposta
-		    	
-	            if (ConstConfigDebugProd.isDebug)
-	            	System.out.println("Encerrou a thread...");
+		            if (ConstConfigDebugProd.isDebug)
+		            	System.out.println("Encerrou a thread...");
+		    	}
 		    }
 		}
 	}
@@ -128,7 +160,7 @@ public class MainAppClient {
 				System.out.println(" \n  8  - Listar todos os alunos \n  9 - Sair");
 				break;
 			}
-			case "student":
+			case "studant":
 			{
 				System.out.println("Alunos: \n  5 - Adicionar | 6  - Pesquisar | 7 - Excluir "
 						+" \n  8  - Listar todas os alunos \n  9 - Sair");
@@ -140,9 +172,40 @@ public class MainAppClient {
 						+" \n  4  - Listar todas as turmas \n  9 - Sair");
 				break;
 			}
-			
 		}
 		
 		System.out.print("Informe a opção de requisição: ");
+	}
+	
+	public boolean isOptValid(String serverSelected, String option) {
+		boolean ret = false;
+		int opt = Integer.parseInt(option);
+		
+		switch (serverSelected) {
+			case "cache":
+			case "management":
+			{
+				if (opt > 0 && opt < 10) 
+					ret = true;
+				
+				break;
+			}
+			case "studant":
+			{
+				if (opt > 4 && opt < 10) 
+					ret = true;
+			
+				break;
+			}
+			case "class":
+			{
+				if ((opt > 0 && opt < 5) || opt == 9) 
+					ret = true;
+				
+				break;
+			}
+		}
+		
+		return ret;
 	}
 }
