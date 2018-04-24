@@ -29,7 +29,7 @@ public class MainClassDatabase {
         	}
         	
             // Cria tratador de cliente numa nova thread
-            ClassDatabaseClientSocket clientHandler = new ClassDatabaseClientSocket(clientSocket, this);
+            HandlerClassDatabase clientHandler = new HandlerClassDatabase(clientSocket, this);
             new Thread(clientHandler).start();
         }
 	}

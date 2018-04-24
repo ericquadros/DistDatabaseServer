@@ -24,11 +24,13 @@ public class MainAppClient {
 	public void init() throws IOException {
 		// Inicializando configuracoes, lendo do arquivo
 		AppClient.Settings settings = new AppClient.Settings();
-		String serverSelected = "studant"; // Opcoes class, studant, cache, management
+		Scanner scannerKeyboard = new Scanner(System.in);
+		
+		String serverSelected = "class"; // Opcoes class, studant, cache, management		
+		
+		serverSelected = this.showServerMenu(scannerKeyboard);
 		
 		settings.setServer(serverSelected); // Setando o cliente para o set para testar a classe selecionada, no final deve ser removido
-		
-		Scanner scannerKeyboard = new Scanner(System.in);
 		
 		String protocol = "";
 		
@@ -55,20 +57,20 @@ public class MainAppClient {
 		    	} else {
 		    		
 		    		if (optKeyboard.equals("1")) {
-				    	System.out.println("Digite o codigo da turma a ser inserida");
+				    	System.out.print("Digite o codigo da turma a ser inserida");
 				    	String turmaId = scannerKeyboard.nextLine();
 				    	protocol = "/incluiTurma/" + turmaId;
 				    	
-				    	System.out.println("Digite o nome da turma a ser inserida");
+				    	System.out.print("Digite o nome da turma a ser inserida");
 				    	String nome = scannerKeyboard.nextLine();
 				    	protocol = protocol + "/" + nome;
 				    	
 				    } else if (optKeyboard.equals("2")) {
-				    	System.out.println("Digite o codigo da turma Para busca");
+				    	System.out.print("Digite o codigo da turma Para busca");
 				    	protocol = "/turma/" + scannerKeyboard.nextLine();
 				    	
 				    } else if (optKeyboard.equals("3")) {
-				    	System.out.println("Digite o codigo da turma para apagar");
+				    	System.out.print("Digite o codigo da turma para apagar");
 				    	protocol = "/apagaTurma/" + scannerKeyboard.nextLine();
 				    	
 				    } else if(optKeyboard.equals("4")) {
@@ -76,31 +78,33 @@ public class MainAppClient {
 				    }
 			    	
 				    else if(optKeyboard.equals("5")) {
-				    	System.out.println("Digite o codigo do aluno a ser inserido");
+				    	System.out.print("Digite o codigo do aluno a ser inserido");
 				    	String alunoId = scannerKeyboard.nextLine();
 				    	protocol = "/incluiAluno/" + alunoId;
 				    	
-				    	System.out.println("Digite o nome do aluno a ser inserido");
+				    	System.out.print("Digite o nome do aluno a ser inserido");
 				    	String nome = scannerKeyboard.nextLine();
 				    	protocol = protocol + "/" + nome;
 				    	
-				    	System.out.println("Digite as turmas que o aluno pertence (formato: 1, 2, 3): ");
+				    	System.out.print("Digite as turmas que o aluno pertence (formato: 1, 2, 3): ");
 				    	String turmas = scannerKeyboard.nextLine();
 				    	protocol = protocol + "/" + turmas;
 				    	
 				    } else if(optKeyboard.equals("6")) {
-				    	System.out.println("Digite o codigo do aluno para buscar");
+				    	System.out.print("Digite o codigo do aluno para buscar");
 				    	protocol = "/aluno/" + scannerKeyboard.nextLine();
 				    	
 				    } else if(optKeyboard.equals("7")) {
-				    	System.out.println("Digite o codigo do aluno para apagar"); 
+				    	System.out.print("Digite o codigo do aluno para apagar"); 
 				    	protocol = "/apagaAluno/" + scannerKeyboard.nextLine();
 				    	
-				    } else if(optKeyboard.equals("8")) {
+				    } else if (optKeyboard.equals("8")) {
 				    	protocol = "/alunos";
-				    }
+				    }  else if (optKeyboard.equals("9")) {
+				    	protocol = "/sair";
+				    } 
 					
-					if (ConstConfigDebugProd.isDebug) 
+					//if (ConstConfigDebugProd.isDebug) 
 						System.out.println("Enviando requisição " + protocol + " para o servidor " + settings.getHost() + ":" + settings.getPort());
 					
 			    	//Iniciando para receber resposta
@@ -155,9 +159,10 @@ public class MainAppClient {
 			case "management":
 			{
 				System.out.println("Turmas: \n  1 - Adicionar | 2  - Pesquisar | 3 - Excluir ");
-				System.out.println(" \n  4  - Listar todas as turma");
+				System.out.println("  4  - Listar todas as turmas");
 				System.out.println("Alunos: \n  5 - Adicionar | 6  - Pesquisar | 7 - Excluir ");
-				System.out.println(" \n  8  - Listar todos os alunos \n  9 - Sair");
+				System.out.println("  8  - Listar todos os alunos");
+				System.out.println("\n  9 - Sair");
 				break;
 			}
 			case "studant":
@@ -204,6 +209,41 @@ public class MainAppClient {
 				
 				break;
 			}
+		}
+		
+		return ret;
+	}
+	
+	public String showServerMenu(Scanner scanOpt) {
+		String ret = "";
+		
+		System.out.println("\n=== App Cliente = Executar requisições ===");
+		System.out.println("\nServidor: 1 - Cache | 2  - Gerenciador | 3 - Turmas | 4 - Alunos");
+		System.out.print("Informe o servidor selecionado: ");
+		
+		int option = Integer.parseInt(scanOpt.nextLine());
+		
+		switch (option) {
+		
+			case 1:
+				ret = "cache";
+				
+				break;
+			case 2:
+				ret = "management";
+				
+				break;
+			case 3:
+				ret = "class";
+				
+				break;
+			case 4:
+				ret = "studant";
+				
+				break;
+			default:
+				
+				break;
 		}
 		
 		return ret;

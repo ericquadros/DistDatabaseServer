@@ -48,26 +48,27 @@ public class HandlerStudantDatabase implements Runnable {
 			
 			 while (true) {
 				 
-			    String clienteMensagem = this.in.nextLine();
+			    String messageClientProtocol = this.in.nextLine(); //Recebe a requisição do client
 		  	    	
 				//if (ConstConfigDebugProd.isDebug) 
-					System.out.println("ClassDatabaseServer: Mensagem recebida do client: " + clienteMensagem);     
-				if (clienteMensagem.equals("/fim")) {
+					System.out.println(pathClass + ": Mensagem recebida do client: " + messageClientProtocol);     
+				if (messageClientProtocol.equals("/fim")) {
 					//this.getServer().executeEnd();
                 	in.close();
                 	out.close();
                   
                   break;
+                  
                 } else {
                 	
-                	String[] messageCliBreak = clienteMensagem.split("/");
+                	String[] messageCliBreak = messageClientProtocol.split("/");
                 	
                 	String messageOpt = (messageCliBreak.length > 1) ? messageCliBreak[1] : "";
             		String messageParam1 = (messageCliBreak.length > 2) ? messageCliBreak[2] : "";
             		String messageParam2 = (messageCliBreak.length > 3) ? messageCliBreak[3] : "";
             		String messageParam3 = (messageCliBreak.length > 4) ? messageCliBreak[4] : "";
                 	
-            		System.out.println("messageOpt e: " + messageOpt);
+            		//System.out.println("messageOpt e: " + messageOpt);
             		
             		String textReturn = "";
             		

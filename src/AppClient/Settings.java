@@ -22,7 +22,7 @@ public class Settings {
 	private int classServerPort;
 	
 	public Settings() {
-		host = "127.0.0.1"; // Por padrão inicializamos com localhost
+		this.host = "127.0.0.1"; // Por padrão inicializamos com localhost
 		this.loadSettingsfromConfig();
 	}
 	
@@ -41,7 +41,7 @@ public class Settings {
 				this.cacheServerHost = config.getCacheServerHost();
 				this.cacheServerPort = config.getCacheServerPort();
 				this.managementServerHost = config.getManagementServerHost();
-				this.managementServerPort = config.getClassServerPort();
+				this.managementServerPort = config.getManagementServerPort();
 				this.studentServerHost = config.getStudentServerHost();
 				this.studentServerPort = config.getStudentServerPort();
 				this.classServerHost = config.getClassServerHost();
