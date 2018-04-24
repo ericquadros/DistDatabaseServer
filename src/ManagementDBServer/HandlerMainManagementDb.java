@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.swing.DebugGraphics;
@@ -174,6 +175,84 @@ public class HandlerMainManagementDb implements Runnable {
 								out.flush();
 								out.close();
 								
+								break;
+								
+							case "incluiAluno": // incluiAluno/<idAluno>/<nomeAluno>/<listaDeTurmas>
+								 
+								studantId = 0;
+								String studantName = "";
+								
+								textReturn = "";
+								
+								if (!messageParam1.isEmpty() && !messageParam2.isEmpty() && !messageParam3.isEmpty()) {
+									studantId = Integer.parseInt(messageParam1);
+									studantName = messageParam2;
+									
+									textReturn = requestSocketServerStudantsGet(studantId);
+									
+									ReturnCodeFileModel returnCodeServerStudants = new ReturnCodeFileModel(0, "");
+									returnCodeServerStudants = gson.fromJson(textReturn, ReturnCodeFileModel.class);
+
+									if (returnCodeServerStudants.getCodRetorno() > 0) {
+										this.out.println(gson.toJson(returnCodeServerStudants)); //JSON
+										
+										out.flush();
+										out.close();
+										
+									} else {
+										StudantFileModel studantFromServer = new StudantFileModel(0, "", null);
+										studantFromServer = gson.fromJson(textReturn, StudantFileModel.class); // Aluno
+										
+										if (studantFromServer.getIdStudent() > 0) { // continua
+											
+											classesFromServerClass = new ListClassFileModel();
+											classesFromServerClass = this.requestSocketServerClassGetAll(); // Consulta as turmas no servidor de turmas
+											
+											ArrayList<ClassFileModel> turmasAdd = new ArrayList<ClassFileModel>();
+											
+											String[] turmas =  messageParam3.split(",");
+											int turmaId = 0;
+											
+											for (String turma : turmas) { 
+												turma = turma.trim();
+												if (!turma.isEmpty()) {
+													turmaId = Integer.parseInt(turma);
+													
+													if (turmaId > 0) { // Verifica se a turma existe
+														if (classesFromServerClass.isClassExists(turmaId)) {
+															ClassFileModel turmaModel = new ClassFileModel(turmaId, "", null);
+															turmasAdd.add(turmaModel);
+														} else {
+															textReturn = ReturnCodeEnum.ErroDeRelacionamento.toSring();
+															this.out.println(textReturn); //JSON
+															
+															out.flush();
+															out.close();
+														}
+													}
+												}
+											}
+											
+										} else {
+											textReturn = ReturnCodeEnum.RequisicaoInvalida.toSring();
+											this.out.println(textReturn); //JSON
+											
+											out.flush();
+											out.close();
+										}
+									}
+									
+								} else {
+									textReturn = ReturnCodeEnum.RequisicaoInvalida.toSring();
+									out.println(textReturn); //JSON
+									
+									out.flush();
+									out.close();
+								}
+								
+								this.in.close();
+								this.clienteSocket.close();
+						
 								break;
 								
 								
